@@ -1,13 +1,202 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding:0;
+    font-family: roboto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    background-color: var(--bg-accent);
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',monospace;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  a{
+    color: var(--text-color);
+    text-decoration:none;
+  }
+  
+  /* Top Navigation Bar */
+  
+  /* <nav> */
+  .navbarr{
+    height: var(--nav-size);
+    padding: 0 1rem;
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+  }
+  /* <ul> */
+  .navbar-navv {
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    margin-left: auto;
+  }
+  
+  /* <li> */
+  .nav-itemm {
+    width: calc(var(--nav-size) * 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Icon Button */
+  .icon-button {
+    --button-size: calc(var(--nav-size) * 0.5);
+    width: var(--button-size);
+    height: var(--button-size);
+    background-color: var(--bg-icon);
+    border-radius: 50%;
+    padding: 5px;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter 300ms;
+  }
+  
+  .icon-button:hover {
+    filter: brightness(1.2);
+  }
+
+  .icon-button svg { 
+    fill: var(--text-color);
+    width: 20px;
+    height: 20px;
+  }
+  
+  .toggle {
+  position: relative;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input[type="checkbox"].checkbox {
+  width: 40px;
+  height: 10px;
+  background: #555;
+  position: relative;
+  border-radius: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  vertical-align: 2px;
+  outline: none;
 }
+
+input[type="checkbox"].checkbox:checked + label {
+  left: 30px;
+}
+
+input[type="checkbox"].checkbox:focus-visible {
+  outline: solid 2px white;
+}
+
+input[type="checkbox"].checkbox + label {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: absolute;
+  left: 2px;
+  background: #fff;
+  opacity: 0.9;
+  background-color: cyan;
+}
+
+.toggle-container {
+  display: flex;
+  margin-right: 1.2rem;
+}
+
+.toggle-container > span {
+  font-size: 1.2em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top: 4px;
+  margin-right: 2px;
+}
+
+.toggle-container > span:last-child {
+  margin-top: 5px;
+}
+
+  :root { 
+    --gray0: #f8f8f8;
+    --gray1: #dbe1e8;
+    --gray2: #b2becd;
+    --gray3: #6c7983;
+    --gray4: #454e56;
+    --gray5: #2a2e35;
+    --gray6: #12181b;
+    --bg:  #242526;
+    --bg-accent: #484a4d;
+    --text-color: #dadce1;
+    --nav-size: 60px;
+    --border: 1px solid #474a4d;
+    --border-radius: 8px;
+    --speed: 500ms; 
+  }
+  
+  .light-mode {
+    background-color: #fff;
+    color: var(--gray6);
+    --text-color: var(--gray6);
+    transition: background-color 0.25s ease-out;
+    --bg-icon:var(--gray1);
+  }
+
+  .light-mode .table-font{
+    color: black;
+  }
+  .light-mode .navbarr{
+    background-color:linear-gradient(to right, var(--gray5), var(--gray6));
+    transition: background-color 0.25s ease-out;
+  }
+  
+  .dark-mode {
+    background-color: var(--gray5);
+    --bg-nav: linear-gradient(to right, var(--gray5), var(--gray6));
+    --text-color: var(--gray0);
+    transition: background-color 0.25s ease-out;
+    --bg-icon:#484a4d;
+  }
+  .dark-mode .navbarr{
+  background-color: linear-gradient(to right, var(--gray5), var(--gray6));
+  transition: background-color 0.25s ease-out;
+  }
+  .dark-mode .table-font{
+    color: white;
+  }
+
+  #dark-mode::before {
+    background: #2a2e35;
+  }
+  
+  #light-mode::before {
+    background: #ffffff;
+  }
+
+  @media(max-width:568px){
+    .navbar-img{
+      height: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+  }
