@@ -5,9 +5,6 @@ import './Join.css';
 const Join = () => {
     const [name, setName] = useState(' ');
     const [room, setRoom] = useState(' ');
-    const hello = () => {
-        console.log('hello')
-    } 
     return (
         <div className="showcase">
             <div className="showcase-top">
