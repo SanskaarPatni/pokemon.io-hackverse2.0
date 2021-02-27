@@ -55,7 +55,6 @@ const Chat = ({ location }) => {
     <div className={darkMode ? "dark-mode" : "light-mode"}>
       <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
       <Container fluid={true}>
-      
           <Col xs="12" md="4" >
             <InfoBar room={room} />
             <Messages messages={messages} name={name} />
