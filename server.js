@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
         if (seenSet.size > 17) {
             seenSet.clear();
         }
-        //keep getting new ids until we find a pokemon not in out set
+        //keep getting a new pokemon id until we find a pokemon not in out set
         while (true) {
             newPokeId = pokeId();
             if (!seenSet.has(newPokeId)) {
@@ -91,7 +91,107 @@ io.on('connection', (socket) => {
                 callback();
             });
     }
+    //when user clicks the start game button
+    socket.on('start-game', (region, rounds, maxTime, callback) => {
+        //set the game params
+        regionNumber = region;
+        totalRounds = rounds;
+        maxCount = maxTime;
+
+        //get the user who started the game
+        const user = getUser(socket.id);
+        //initializations
+        io.to(user.room).emit('weHaveAWinner', { room: user.room, winner: '' })
+        initializePlayers(user.room);
+        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
+        
+        if (getUsersInRoom(user.room).length < 2) {
+            io.to(user.room).emit('message', { user: 'Admin', text: `Waiting for more players(min players:2)!` });
+        }
+        else {
+            //get the first pokemon
+            refreshPokemon(user, () => {
+                count = maxTime;
+            });
+            //send details from admin in first round 
+            io.to(user.room).emit('music', { user: 'Admin', value: true });
+            io.to(user.room).emit('setLoadingTrue', { user: 'Admin' })
+            io.to(user.room).emit('removeRules', { user: 'Admin', val: true });
+            io.to(user.room).emit('gameSettings', { user: 'Admin', val: false });
+            io.to(user.room).emit('btn-disable', { user: 'Admin', val: true });
+            io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has started a new game.` });
+            io.to(user.room).emit('message', { user: 'Admin', text: `Game details: Generation ${regionNumber} Total rounds: ${totalRounds} Timer:${maxTime}secs.` });
+            callback();
+        }
+    });
     
+    socket.on('start-time', (callback) => {
+        const user = getUser(socket.id);
+        var count = maxCount;
+        var rounds = Number(totalRounds) - 1;
+
+        var interval = setInterval(function () {
+            //send time each second back to client
+            if (count >= 0)
+                io.to(user.room).emit('setTimeLeft', { user: 'Admin', time: count });
+            //if round time over    
+            if (count === 1) {
+                //if all rounds over
+                if (rounds == 0) {
+                    io.to(user.room).emit('message', { user: 'Admin', text: `Pokemon's name was ${pokename}` });
+                    io.to(user.room).emit('message', { user: 'Admin', text: 'Game Over.' });
+                    
+                    io.to(user.room).emit('gameSettings', { user: 'Admin', val: true });
+                    io.to(user.room).emit('btn-disable', { user: 'Admin', val: false });
+                    
+                    io.to(user.room).emit('initialSettings', { user: 'Admin' });
+                    clearInterval(interval);
+                    
+                    io.to(user.room).emit('setTimeLeft', { user: 'Admin', time: '' });
+                    
+                    var winner = getWinner(user.room);
+                    //send winner name to TextContainer
+                    io.to(user.room).emit('weHaveAWinner', { room: user.room, winner: winner })
+                    
+                    //send winner name in chat
+                    if (winner != '') {
+                        io.to(user.room).emit('message', { user: 'Admin', text: `${winner} won the match!` })
+                    }
+                    else {
+                        io.to(user.room).emit('message', { user: 'Admin', text: `Tie!` })
+                    }
+                    //stop the music
+                    io.to(user.room).emit('music', { user: 'Admin', value: false });
+                }
+                else {
+                    initializeGuesses(user.room);
+                    io.to(user.room).emit('message', { user: 'Admin', text: `Pokemon's name was ${pokename}` });
+                    io.to(user.room).emit('setLoadingTrue', { user: 'Admin' })
+                    
+                    //just to get some buffer time
+                    setTimeout(() => {
+                        //initialize count to what the host had set
+                        refreshPokemon(user, () => { count = maxCount });
+                    }, 500);
+
+                    rounds--;
+                }
+                
+                io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
+            }
+            count--;
+        }, 1000);
+    });
+
+    socket.on('increase-score', (time, callback) => {
+        const user = getUser(socket.id);
+        if (user.guess === false) {
+            rightGuess(user.id);
+            increaseScore(user.id, time);
+        }
+        callback();
+    })
+
     socket.on('disconnect', () => {
         const user = removeUser(socket.id);
         if (user) {
