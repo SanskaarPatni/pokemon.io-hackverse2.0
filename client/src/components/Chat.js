@@ -10,6 +10,8 @@ import Inputt from './Input';
 import PokeGame from './PokeGame';
 import GameSettings from './GameSettings';
 import { Container, Row, Col } from 'reactstrap';
+var similarity = require('similarity')
+
 let socket;
 const Chat = ({ location }) => {
   const [darkMode, setDarkMode] = useState(getInitialMode());
@@ -29,7 +31,6 @@ const Chat = ({ location }) => {
   const [rounds, setRounds] = useState(3);
   const [region, setRegion] = useState(1);
   const [maxTime, setMaxTime] = useState(10);
-  //const ENDPOINT = 'https://pokemonio.herokuapp.com/';
   const ENDPOINT = 'http://localhost:5000/';
   const correctSound = './correct.mp3';
   const startSound = './start.mp3';
@@ -139,7 +140,11 @@ const Chat = ({ location }) => {
         playCorrect();
       }
       else {
-        socket.emit('sendMessage', message, () => setMessage(''));
+        if(similarity(message,wildPokemonName)>0.6){
+          var closeString=`${message} is close!`;
+          setMessages(messages => [...messages, {user:name,text:closeString}]);
+          setMessage('');
+        }else socket.emit('sendMessage', message, () => setMessage(''));
       }
     }
   }
@@ -171,7 +176,7 @@ const Chat = ({ location }) => {
           </Col>
         </Row>
         <Row>
-          <div className='m-auto p-3' ><i>Made with <span role="img" aria-label="heart">❤️</span> by <strong>Team burteforce</strong></i></div>
+          <div className='m-auto p-3' ><i>Made with <span role="img" aria-label="heart">❤️</span> by <strong>Team bruteforce</strong></i></div>
         </Row>
       </Container>
     </div>
