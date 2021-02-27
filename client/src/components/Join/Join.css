@@ -1,0 +1,142 @@
+#root {
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+  color:#fff;
+}
+
+h1{
+  color:#fff;
+}
+
+.showcase {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  background: url(./gen6.jpg) no-repeat center center/cover;
+} 
+
+.showcase::after{
+  content: '';
+  position: absolute;
+  top:0;
+  width:100vw;
+  height: 100vh;
+  z-index: 1;
+  background: rgba(0,0,0,0.6);
+  box-shadow: inset 120px 100px 250px #000000;
+}
+
+.showcase-top{
+  position:relative;
+  z-index: 2;
+  height: 120px;
+}
+
+.showcase-top img{
+  width: 250px;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.showcase-top a{
+  position: absolute;
+  top:50%;
+  right:0;
+  transform: translate(-50%,-50%);
+}
+
+.showcase-content{
+  position: relative;
+  z-index: 2;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 15rem;
+}
+
+.showcase-content h1{
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  margin:0 0 2rem;
+}  
+
+.button {
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #2979FF;
+    padding: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    border: none;
+    width: 100%;
+}
+
+.joinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+}
+.btnn{
+	display: inline-block;
+  background: var(--primary-color);
+  background: rgb(255, 66, 41);
+	color: #fff;
+	padding: 0.4rem 1.3rem;
+	font-size: 1rem;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	margin-right: 0.5rem;
+	transition: opacity 0.2s ease-in;
+	outline: none;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+	border-radius: 2px;
+}
+.btnn:hover{
+  opacity: 0.9;
+}
+
+.btnn-rounded{
+  border-radius: 5px;
+}
+
+.btnn-xl{
+  font-size: 2rem;
+  padding: 1.5rem 2.1rem;
+  text-transform: uppercase;
+}
+
+.btnn-lg{
+  font-size: 1rem;
+  padding: 0.1rem 1.3rem;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+@media(max-width:568px){
+  .showcase-content h1{
+    font-size: 1.2rem;
+  }
+  .showcase {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    background: url(./cute.jpg) no-repeat center center/cover;
+  } 
+}
